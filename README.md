@@ -15,4 +15,4 @@ python -m pip install --upgrade --user ortools
 ```bash
 python assign_ta.py cost_matrix_small.csv
 ```
-3. Check out the output.txt file in your current directory.
+3. Check out the output.txt file in your current directory
