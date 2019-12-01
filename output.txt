@@ -1,0 +1,8 @@
+Hello Professor Howell! Here's your TA assignment result. 
+Applicant #0 is assigned to Recitation 3.  Cost = 31
+Applicant #1 is assigned to Recitation 2.  Cost = 7
+Applicant #2 is assigned to Recitation 1.  Cost = 30
+Applicant #3 cannot be assigned to any recitation.
+Applicant #4 is assigned to Recitation 0.  Cost = 25
+Applicant #5 cannot be assigned to any recitation.
+Applicant #6 is assigned to Recitation 4.  Cost = 1
