@@ -1,4 +1,4 @@
-# TA Assignment Problem
+# TA Assignment Solver
 
 > TODO's for Team:
 - Compute a 92x92 score matrix from the matrices we have created so far.
