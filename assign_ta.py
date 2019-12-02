@@ -10,7 +10,7 @@ FILENUM = 2
 THRESHOLD = 999999
 
 def main():
-
+  
   cost = createDataArray()
   course_dict = createCourseDict()
   rows = len(cost)
@@ -37,7 +37,7 @@ def main():
               assignment.AssignmentCost(i))
       else:
         result = 'Applicant #%d cannot be assigned to any recitation.' %i
-      print(result)
+      print(result) 
       outputFile.write(result + "\r\n")
 
   elif solve_status == assignment.INFEASIBLE:
@@ -68,6 +68,7 @@ def convertInput():
     checkFileExistence(inputFile)
     with open(inputFile, 'r') as csvfile:
       rawCost  = list(csv.reader(csvfile, delimiter=','))
+      print(rawCost)
       print("Cost matrix is created.")
       return rawCost
 
@@ -80,15 +81,16 @@ def createCourseDict():
       rawCost  = list(csv.reader(csvfile, delimiter=','))
       rawCost.pop(0)
       for i in range(len(rawCost)):
-        res[i] = rawCost[i][0]
+        res[i] = rawCost[i][1]
       return res
 
 def createDataArray():
   rawCost = convertInput()
   for row in rawCost:
-    del row[0]
+    del row[0:2]
+    print(row)
   rawCost.pop(0)
-  transposedCost = [[int(string) for string in inner] for inner in rawCost]
+  transposedCost = [[int(string[0]) for string in inner] for inner in rawCost]
   cost = [[row[i] for row in transposedCost] for i in range(len(transposedCost[0]))]
   return cost
 
