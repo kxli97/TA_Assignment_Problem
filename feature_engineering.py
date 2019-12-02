@@ -175,9 +175,18 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     cost_df = pd.DataFrame(out)
     cost_df.to_csv(r'cost.csv', sep = ',', index = False)
 
+
     cost[cost>0] =1
     for i in range(N):
         print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
+
+    outputFile = open("candidates.txt", "w+")
+    outputFile.write("Here are the people hwo are qualified to teach over 10 courses.")
+    interviewee = np.sum(cost, axis = 0)
+    for i in range(len(interviewee)):
+        if interviewee[i] >10:
+            outputFile.write("Candidate #" +str(i+1))
+            outputFile.write('\n')
         
 if __name__ == '__main__':
     course = sys. argv [1]
