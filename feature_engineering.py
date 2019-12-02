@@ -15,7 +15,6 @@ def cleanPreference(filename, rep):
     for i in range(len(data['course'])):
         course_name = data['course'][i]
         course_index[course_name] = i+1
-
     
     with open(filename, 'r') as csvfile:
         prefs = list(line for line in csvfile)
@@ -37,11 +36,9 @@ def cleanPreference(filename, rep):
                     choice = random.choice(selection) 
                     data[str(i+1)][course_index[number]] = choice #student i, course j
                     selection.remove(choice)
-            data[str(i+1)] = np.ceil(np.array(data[str(i+1)])*5/total_preferences)
-        
+            data[str(i+1)] = np.ceil(np.array(data[str(i+1)])*5/total_preferences)     
         for key in data:
-            data[key] = pd.Series(data[key]).repeat(rep)
-            
+            data[key] = pd.Series(data[key]).repeat(rep) 
     return pd.DataFrame(data)
 
 
@@ -126,9 +123,9 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     print("Processing undergrad preferences .. ")
     #clean preference matrix, return dataframe, then return N*M matrix
     pref_df = cleanPreference(preferenceFile, repeat)
+    pref_df.to_csv(r'pref.csv', sep = ',', index = False)
     pref_matrix = np.array(pref_df.iloc[:, 1:])
     cost_matrix = 6*np.ones((N,M)) - pref_matrix #revert to cost matrix, the larger the less preferred
-    
     
     print("Retrieving eligibility and scores .. ")
     #compute availability matrix NxM, 1 if student can lead recitation, 0 otherwise
@@ -162,8 +159,7 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     cost = np.multiply(eligibility, cost_matrix)
     print("Finished!")
 
-    for i in range(N):
-        print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
+
     
     #make dataframe
     out = dict()
@@ -179,6 +175,9 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     cost_df = pd.DataFrame(out)
     cost_df.to_csv(r'cost.csv', sep = ',', index = False)
 
+    cost[cost>0] =1
+    for i in range(N):
+        print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
         
 if __name__ == '__main__':
     course = sys. argv [1]
