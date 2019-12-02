@@ -165,7 +165,7 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     out['Course'] = course_name
     for i in range(N):
         out[str(i+1)] = [str(val) for val in cost[:, i]]
-        print("Recitation %s found %d candidates."% (course_name[i], sum(cost[i])) )
+        print(" Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]) )
     
         
     cost_df = pd.DataFrame(out)
