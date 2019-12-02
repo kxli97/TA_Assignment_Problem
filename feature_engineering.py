@@ -3,7 +3,6 @@ import random
 import numpy as np
 import sys
 import csv
-import time
 
 def cleanPreference(filename, rep):
     data = dict()
