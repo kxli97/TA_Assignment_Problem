@@ -5,6 +5,11 @@ import sys
 import csv
 import time
 
+def replace_all(text, dic):
+    for k, v in dic.items():
+        text = text.replace(k, v)
+    return text
+
 def cleanPreference(filename, rep):
     data = dict()
     data['course'] = ['21-111', '21-112', '21-120', '21-122', '21-124', '21-127',
@@ -14,38 +19,34 @@ def cleanPreference(filename, rep):
     course_index = dict()
     for i in range(len(data['course'])):
         course_name = data['course'][i]
-        course_index[course_name] = i+1
-    
+        course_index[course_name] = i
+
     with open(filename, 'r') as csvfile:
         prefs = list(line for line in csvfile)
         prefs.pop(0)
         nrow, ncol = len(prefs), len(data['course'])
         for i in range(nrow):
             data[str(i+1)] = [0]*ncol
-        
+
         for i in range(len(prefs)):
-            pref = prefs[i].strip().split(',')[2:-6]
-            selection = [k+1 for k in range(len(pref))]
-            
-            total_preferences = len(pref)      
-            for course in pref:  
-                if course[0] == ' ': 
-                    course = course[1:]
-                number = course[:6]
+            pref = prefs[i].replace('"', "").strip().split(',')[2:-6]
+            selection = [k+1 for k in range(len(pref))] #number of choices
+            total_preferences = len(pref)
+
+            for course in pref:
+                number = course[:7]
+                if number[0] == ' ': number = number[1:]
+                else: number = number[:6]
                 if number in course_index:
                     choice = random.choice(selection) 
                     data[str(i+1)][course_index[number]] = choice #student i, course j
                     selection.remove(choice)
-            data[str(i+1)] = np.ceil(np.array(data[str(i+1)])*5/total_preferences)     
+            data[str(i+1)] = np.ceil(np.array(data[str(i+1)])*5/total_preferences)   
+        # print(data[str(69)])  
         for key in data:
             data[key] = pd.Series(data[key]).repeat(rep) 
     return pd.DataFrame(data)
 
-
-def replace_all(text, dic):
-    for k, v in dic.items():
-        text = text.replace(k, v)
-    return text
 
 #read course schedule file
 def getCatalog(filename):
@@ -98,10 +99,9 @@ def cleanGrades(filename, rep):
     return res
 
 def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
-    
+
     #get catalog: return course number and index alignment, repition of recitation
     course_name, course_vol = getCatalog(courseScheduleFile)
-    
     repeat = [v for k, v in course_vol.items()]
     
     print("Processing schedules .. ")
@@ -123,10 +123,11 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     print("Processing undergrad preferences .. ")
     #clean preference matrix, return dataframe, then return N*M matrix
     pref_df = cleanPreference(preferenceFile, repeat)
-    pref_df.to_csv(r'pref.csv', sep = ',', index = False)
+    # pref_df.to_csv(r'pref.csv', sep = ',', index = False)
     pref_matrix = np.array(pref_df.iloc[:, 1:])
     cost_matrix = 6*np.ones((N,M)) - pref_matrix #revert to cost matrix, the larger the less preferred
-    
+    cost_matrix[cost_matrix == 6] = 0
+
     print("Retrieving eligibility and scores .. ")
     #compute availability matrix NxM, 1 if student can lead recitation, 0 otherwise
     availability = np.zeros((N, M))
@@ -159,8 +160,17 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     cost = np.multiply(eligibility, cost_matrix)
     print("Finished!")
 
+    #filter unqualified people, collapse vertically
+    candidates = np.sum(cost, axis = 0)
 
+    #filter unpopular class, collapse horizontally
+    recitations = np.sum(cost, axis = 1)
     
+    for i in range(N):
+        for j in range(M):
+            if candidates[j] == 0 or recitations[i] == 0:
+                cost[i, j] = 999999
+
     #make dataframe
     out = dict()
     out['Course'] = course_name
@@ -175,24 +185,34 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     cost_df = pd.DataFrame(out)
     cost_df.to_csv(r'cost.csv', sep = ',', index = False)
 
-
-    cost[cost>0] =1
+    cost[cost == 999999] = 0
+    cost[cost > 0] = 1
     for i in range(N):
         print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
 
-    outputFile = open("candidates.txt", "w+")
-    outputFile.write("Here are the people hwo are qualified to teach over 10 courses.")
-    interviewee = np.sum(cost, axis = 0)
-    for i in range(len(interviewee)):
-        if interviewee[i] >10:
-            outputFile.write("Candidate #" +str(i+1))
-            outputFile.write('\n')
+    outputFile1 = open("unassigned_recitations.txt", "w+")
+    outputFile1.write("Hi Jason, we are unable to find qualified or available candidates for the following courses: \n")
+    for i in range(len(recitations)):
+        if recitations[i] == 0:
+            outputFile1.write("Course #" + course_name[i])
+            outputFile1.write('\n')
+
+    interviewee = np.sum(cost, axis = 0) #it's different from candidates!!!
+    outputFile2 = open("candidates.txt", "w+")
+    outputFile2.write("Here are the people who are qualified to teach over 5 courses. \n")
+    for i in range(len(candidates)):
+        if interviewee[i] >5:
+            outputFile2.write("Candidate #" +str(i+1))
+            outputFile2.write('\n')
         
 if __name__ == '__main__':
+    start_time = time.perf_counter()
+  
     course = sys. argv [1]
     student = sys. argv [2]
     pref = sys. argv [3]
     grades = sys. argv [4]
     main(course, student, pref, grades)
+    print("Finished in ", time.perf_counter() - start_time, "seconds")
 
     
