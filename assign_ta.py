@@ -35,7 +35,7 @@ def main():
               assignment.RightMate(i),
               assignment.AssignmentCost(i))
       else:
-        result = 'Applicant #%d cannot be assigned to any recitation.' %i
+        result = 'Applicant #%d cannot be assigned to any recitation.' % (i+1)
       print(result)
       outputFile.write(result + "\r\n")
 
