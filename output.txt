@@ -1,8 +1,93 @@
 Hello Professor Howell! Here's your TA assignment result. 
-Applicant #0 is assigned to Recitation 3.  Cost = 31
-Applicant #1 is assigned to Recitation 2.  Cost = 7
-Applicant #2 is assigned to Recitation 1.  Cost = 30
-Applicant #3 cannot be assigned to any recitation.
-Applicant #4 is assigned to Recitation 0.  Cost = 25
-Applicant #5 cannot be assigned to any recitation.
-Applicant #6 is assigned to Recitation 4.  Cost = 1
+Applicant #0 is assigned to Recitation 25.  Cost = 6
+Applicant #1 is assigned to Recitation 18.  Cost = 3
+Applicant #2 cannot be assigned to any recitation.
+Applicant #3 is assigned to Recitation 32.  Cost = 2
+Applicant #4 cannot be assigned to any recitation.
+Applicant #5 is assigned to Recitation 27.  Cost = 2
+Applicant #6 cannot be assigned to any recitation.
+Applicant #7 is assigned to Recitation 16.  Cost = 6
+Applicant #8 cannot be assigned to any recitation.
+Applicant #9 is assigned to Recitation 38.  Cost = 6
+Applicant #10 is assigned to Recitation 11.  Cost = 6
+Applicant #11 is assigned to Recitation 6.  Cost = 1
+Applicant #12 cannot be assigned to any recitation.
+Applicant #13 is assigned to Recitation 26.  Cost = 6
+Applicant #14 cannot be assigned to any recitation.
+Applicant #15 is assigned to Recitation 30.  Cost = 2
+Applicant #16 cannot be assigned to any recitation.
+Applicant #17 is assigned to Recitation 36.  Cost = 6
+Applicant #18 cannot be assigned to any recitation.
+Applicant #19 cannot be assigned to any recitation.
+Applicant #20 is assigned to Recitation 20.  Cost = 4
+Applicant #21 cannot be assigned to any recitation.
+Applicant #22 cannot be assigned to any recitation.
+Applicant #23 is assigned to Recitation 23.  Cost = 6
+Applicant #24 cannot be assigned to any recitation.
+Applicant #25 is assigned to Recitation 42.  Cost = 6
+Applicant #26 cannot be assigned to any recitation.
+Applicant #27 cannot be assigned to any recitation.
+Applicant #28 is assigned to Recitation 1.  Cost = 6
+Applicant #29 is assigned to Recitation 3.  Cost = 2
+Applicant #30 is assigned to Recitation 34.  Cost = 1
+Applicant #31 is assigned to Recitation 19.  Cost = 4
+Applicant #32 is assigned to Recitation 9.  Cost = 6
+Applicant #33 cannot be assigned to any recitation.
+Applicant #34 cannot be assigned to any recitation.
+Applicant #35 is assigned to Recitation 7.  Cost = 4
+Applicant #36 cannot be assigned to any recitation.
+Applicant #37 cannot be assigned to any recitation.
+Applicant #38 is assigned to Recitation 14.  Cost = 1
+Applicant #39 is assigned to Recitation 13.  Cost = 1
+Applicant #40 cannot be assigned to any recitation.
+Applicant #41 cannot be assigned to any recitation.
+Applicant #42 cannot be assigned to any recitation.
+Applicant #43 cannot be assigned to any recitation.
+Applicant #44 cannot be assigned to any recitation.
+Applicant #45 cannot be assigned to any recitation.
+Applicant #46 is assigned to Recitation 15.  Cost = 1
+Applicant #47 is assigned to Recitation 4.  Cost = 1
+Applicant #48 is assigned to Recitation 33.  Cost = 2
+Applicant #49 cannot be assigned to any recitation.
+Applicant #50 is assigned to Recitation 41.  Cost = 6
+Applicant #51 is assigned to Recitation 0.  Cost = 6
+Applicant #52 is assigned to Recitation 28.  Cost = 3
+Applicant #53 cannot be assigned to any recitation.
+Applicant #54 is assigned to Recitation 22.  Cost = 5
+Applicant #55 cannot be assigned to any recitation.
+Applicant #56 is assigned to Recitation 8.  Cost = 6
+Applicant #57 cannot be assigned to any recitation.
+Applicant #58 is assigned to Recitation 10.  Cost = 6
+Applicant #59 is assigned to Recitation 37.  Cost = 6
+Applicant #60 is assigned to Recitation 39.  Cost = 6
+Applicant #61 is assigned to Recitation 21.  Cost = 1
+Applicant #62 is assigned to Recitation 5.  Cost = 2
+Applicant #63 cannot be assigned to any recitation.
+Applicant #64 cannot be assigned to any recitation.
+Applicant #65 cannot be assigned to any recitation.
+Applicant #66 cannot be assigned to any recitation.
+Applicant #67 cannot be assigned to any recitation.
+Applicant #68 cannot be assigned to any recitation.
+Applicant #69 cannot be assigned to any recitation.
+Applicant #70 cannot be assigned to any recitation.
+Applicant #71 cannot be assigned to any recitation.
+Applicant #72 cannot be assigned to any recitation.
+Applicant #73 cannot be assigned to any recitation.
+Applicant #74 is assigned to Recitation 24.  Cost = 6
+Applicant #75 cannot be assigned to any recitation.
+Applicant #76 cannot be assigned to any recitation.
+Applicant #77 cannot be assigned to any recitation.
+Applicant #78 is assigned to Recitation 2.  Cost = 1
+Applicant #79 cannot be assigned to any recitation.
+Applicant #80 is assigned to Recitation 35.  Cost = 6
+Applicant #81 cannot be assigned to any recitation.
+Applicant #82 cannot be assigned to any recitation.
+Applicant #83 cannot be assigned to any recitation.
+Applicant #84 is assigned to Recitation 29.  Cost = 1
+Applicant #85 is assigned to Recitation 12.  Cost = 6
+Applicant #86 is assigned to Recitation 17.  Cost = 6
+Applicant #87 cannot be assigned to any recitation.
+Applicant #88 is assigned to Recitation 31.  Cost = 2
+Applicant #89 is assigned to Recitation 40.  Cost = 6
+Applicant #90 cannot be assigned to any recitation.
+Applicant #91 cannot be assigned to any recitation.
