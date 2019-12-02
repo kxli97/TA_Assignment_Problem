@@ -38,7 +38,8 @@ def main():
       else:
         result = 'Applicant #%d cannot be assigned to any recitation.' %(i+1)
       print(result) 
-      outputFile.write(result + "\r\n")
+      outputFile.write(result)
+      outputFile.write('\r\n')
 
   elif solve_status == assignment.INFEASIBLE:
     print('No assignment is possible.')
