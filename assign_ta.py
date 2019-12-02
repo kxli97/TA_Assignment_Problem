@@ -32,7 +32,7 @@ def main():
     for i in range(0, assignment.NumNodes()):
       if assignment.AssignmentCost(i) < THRESHOLD:
         result = 'Applicant #%d is assigned to Recitation %s.  Cost = %d' % (
-              i,
+              i+1,
               course_dict[assignment.RightMate(i)],
               assignment.AssignmentCost(i))
       else:
