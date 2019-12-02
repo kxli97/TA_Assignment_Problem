@@ -3,6 +3,7 @@ import random
 import numpy as np
 import sys
 import csv
+import time
 
 def cleanPreference(filename, rep):
     data = dict()
@@ -160,18 +161,25 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     #compute cost
     cost = np.multiply(eligibility, cost_matrix)
     print("Finished!")
-    
-   for i in range(N):
+
+    for i in range(N):
         print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
-   
+    
+    #make dataframe
     out = dict()
     out['Course'] = course_name
     for i in range(M):
-        out[str(i+1)] = [str(val) for val in cost[:, i]]      
+        out[str(i+1)] = [int(val) for val in cost[:, i]] 
+    #add dummies
+    for i in range(M-N):
+        for key in out:
+            if key == 'Course': out[key].append('dummy'+str(i+1))
+            else: out[key].append(int(999999))
+   
     cost_df = pd.DataFrame(out)
     cost_df.to_csv(r'cost.csv', sep = ',', index = False)
-    
-    
+
+        
 if __name__ == '__main__':
     course = sys. argv [1]
     student = sys. argv [2]
