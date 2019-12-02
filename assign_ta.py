@@ -50,26 +50,26 @@ def main():
   print("Please check out output.txt in your current directory.")
 
 def checkFileExistence(testFile):
-    try: 
-        openedFile = open(testFile)
-        openedFile.close()
-    except:
-        raise Exception('File cannot be opened.')
+  try: 
+      openedFile = open(testFile)
+      openedFile.close()
+  except:
+      raise Exception('File cannot be opened.')
 
 def isValidCommand():
-    if len(inputArgs) != FILENUM:
-        raise Exception("The number of input files is incorrect. A sample command looks like this: 'python assign_ta.py your_cost_matrix.csv'.")
-        return False
-    return True
+  if len(inputArgs) != FILENUM:
+    raise Exception("The number of input files is incorrect. A sample command looks like this: 'python assign_ta.py your_cost_matrix.csv'.")
+    return False
+  return True
 
 def convertInput():
-    if isValidCommand():
-        inputFile = inputArgs[1]
-        checkFileExistence(inputFile)
-        with open(inputFile, 'r') as csvfile:
-          rawCost  = list(csv.reader(csvfile, delimiter=','))
-          print("Cost matrix is created.")
-          return rawCost
+  if isValidCommand():
+    inputFile = inputArgs[1]
+    checkFileExistence(inputFile)
+    with open(inputFile, 'r') as csvfile:
+      rawCost  = list(csv.reader(csvfile, delimiter=','))
+      print("Cost matrix is created.")
+      return rawCost
 
 def createCourseDict():
     if isValidCommand():
@@ -84,15 +84,15 @@ def createCourseDict():
             return res
 
 def createDataArray():
-    rawCost = convertInput()
-    for row in rawCost:
-        del row[0]
-    rawCost.pop(0)
-    transposedCost = [[int(string[0]) for string in inner] for inner in rawCost]
-    cost = [[row[i] for row in transposedCost] for i in range(len(transposedCost[0]))]
-    return cost
+  rawCost = convertInput()
+  for row in rawCost:
+    del row[0]
+  rawCost.pop(0)
+  transposedCost = [[int(string) for string in inner] for inner in rawCost]
+  cost = [[row[i] for row in transposedCost] for i in range(len(transposedCost[0]))]
+  return cost
 
 if __name__ == "__main__":
-    start_time = time.perf_counter()
-    main()
-    print("Finished in ", time.perf_counter() - start_time, "seconds")
+  start_time = time.perf_counter()
+  main()
+  print("Finished in ", time.perf_counter() - start_time, "seconds")
