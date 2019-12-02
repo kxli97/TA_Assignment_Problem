@@ -10,8 +10,9 @@ FILENUM = 2
 THRESHOLD = 999999
 
 def main():
-
+  
   cost = createDataArray()
+  course_dict = createCourseDict()
   rows = len(cost)
   cols = len(cost[0])
   outputFile = open("output.txt", "w+")
@@ -30,13 +31,13 @@ def main():
     print()
     for i in range(0, assignment.NumNodes()):
       if assignment.AssignmentCost(i) < THRESHOLD:
-        result = 'Applicant #%d is assigned to Recitation %d.  Cost = %d' % (
-              i,
-              assignment.RightMate(i),
+        result = 'Applicant #%d is assigned to Recitation %s.  Cost = %d' % (
+              i+1,
+              course_dict[assignment.RightMate(i)],
               assignment.AssignmentCost(i))
       else:
-        result = 'Applicant #%d cannot be assigned to any recitation.' % (i+1)
-      print(result)
+        result = 'Applicant #%d cannot be assigned to any recitation.' %(i+1)
+      print(result) 
       outputFile.write(result + "\r\n")
 
   elif solve_status == assignment.INFEASIBLE:
@@ -69,6 +70,18 @@ def convertInput():
       rawCost  = list(csv.reader(csvfile, delimiter=','))
       print("Cost matrix is created.")
       return rawCost
+
+def createCourseDict():
+    if isValidCommand():
+        inputFile = inputArgs[1]
+        checkFileExistence(inputFile)
+        res = dict()
+        with open(inputFile, 'r') as csvfile:
+            rawCost  = list(csv.reader(csvfile, delimiter=','))
+            rawCost.pop(0)
+            for i in range(len(rawCost)):
+                res[i] = rawCost[i][0]
+            return res
 
 def createDataArray():
   rawCost = convertInput()
