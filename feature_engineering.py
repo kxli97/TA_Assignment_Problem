@@ -162,7 +162,7 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     print("Finished!")
     
    for i in range(N):
-        print("Recitation %s found %d candidates."% (course_name[i], sum(cost[i])) )
+        print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
    
     out = dict()
     out['Course'] = course_name
