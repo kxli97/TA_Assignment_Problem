@@ -16,10 +16,9 @@ python -m pip install --upgrade --user ortools
 python feature_engineering.py course_schedule.csv student_schedule.csv undergrad_preferences.csv grades.csv cost.csv
 ```
 
-3. Run this command to get TAs assigned:
+3. Run this command to get TAs assigned (You can replace the cost.csv with your own cost matrix):
 ```bash
 python assign_ta.py cost.csv
 ```
-or replace cost.csv with your cost matrix
 
 4. Check out the output.txt file in your current directory
