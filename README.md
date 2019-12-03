@@ -4,10 +4,13 @@
 - ~~Compute a 92x92 score matrix from the matrices we have created so far~~
 - ~~Revert it to a cost matrix since the package uses a minimization objective function; for example, the score matrix [10, 20, 30] should be reverted to a cost matrix like [30, 20, 10]~~
 - ~~Fill it into the template cost_matrix.csv; you can refer to the format of cost_matrix_small.csv~~
-- Need to fix the dictionary in assign_ta.py
+- ~~Need to fix the dictionary in assign_ta.py~~
 
 > TODO's for Presentation:
-- Slides
+- Diagrams + Description (Xiaohua + Shane)
+- Pipeline (Selena)
+- Matrices Visualization (Kimberly)
+- Polish the deck style (Together)
 
 > TODO's for Report:
 
