@@ -1,0 +1,126 @@
+from __future__ import print_function
+from ortools.graph import pywrapgraph
+import time
+import numpy as np
+import sys
+import csv
+
+inputArgs = sys.argv
+FILENUM = 3
+THRESHOLD = 999999
+
+def main():
+  
+  dumped_costs = 0
+  cost = createDataArray()
+  course_dict = createCourseDict()
+  rows = len(cost)
+  cols = len(cost[0])
+  outputFile = open("output.txt", "w+")
+  outputFile.write("Hello Professor Howell! Here's your TA assignment result. \r\n")
+
+  assignment = pywrapgraph.LinearSumAssignment()
+  for ta in range(rows):
+    for recitation in range(cols):
+      if cost[ta][recitation]:
+        assignment.AddArcWithCost(ta, recitation, cost[ta][recitation])
+
+  solve_status = assignment.Solve()
+
+  if solve_status == assignment.OPTIMAL:
+    print('Total cost = ', assignment.OptimalCost())
+    for i in range(0, assignment.NumNodes()):
+      if assignment.AssignmentCost(i) < THRESHOLD:
+        result = 'Applicant #%d is assigned to Recitation %s.  Cost = %d' % (
+              i+1,
+              course_dict[assignment.RightMate(i)],
+              assignment.AssignmentCost(i))
+      else:
+        result = 'Applicant #%d cannot be assigned to any recitation.' %(i+1)
+        dumped_costs += 999999
+      print(result) 
+      outputFile.write(result + "\r\n")
+    print()
+    print('Total cost = ', (assignment.OptimalCost()-dumped_costs))
+
+  elif solve_status == assignment.INFEASIBLE:
+    print('No assignment is possible.')
+  elif solve_status == assignment.POSSIBLE_OVERFLOW:
+    print('Some input costs are too large and may cause an integer overflow.')
+
+  outputFile.close()
+  print()
+  print("Please check out output.txt in your current directory.")
+
+def checkFileExistence(testFile):
+  try: 
+      openedFile = open(testFile)
+      openedFile.close()
+  except:
+      raise Exception('File cannot be opened.')
+
+def isValidCommand():
+  if len(inputArgs) != FILENUM:
+    raise Exception("The number of input files is incorrect. A sample command looks like this: 'python assign_ta.py your_cost_matrix.csv'.")
+    return False
+  return True
+
+def convertInput():
+  if isValidCommand():
+    inputFile = inputArgs[1]
+    checkFileExistence(inputFile)
+    with open(inputFile, 'r') as csvfile:
+      rawCost  = list(csv.reader(csvfile, delimiter=','))
+      print("Cost matrix is created.")
+      return rawCost
+
+def createCourseDict():
+  if isValidCommand():
+    inputFile = inputArgs[1]
+    checkFileExistence(inputFile)
+    res = dict()
+    with open(inputFile, 'r') as csvfile:
+      rawCost  = list(csv.reader(csvfile, delimiter=','))
+      rawCost.pop(0)
+      for i in range(len(rawCost)):
+        res[i] = rawCost[i][0] #recitation number
+      return res
+
+def getEval():
+  if isValidCommand():
+    inputFile = inputArgs[2]
+    checkFileExistence(inputFile)
+    with open(inputFile, 'r') as csvfile:
+      scores = list(csv.reader(csvfile, delimiter=','))
+      scores.pop(0)
+      student = [scores[i][0] for i in range(len(scores))]
+      course = [scores[i][1] for i in range(len(scores))]
+      return student, course
+
+def createDataArray():
+  rawCost = convertInput()
+  for row in rawCost:
+    del row[0]
+  rawCost.pop(0)
+
+  ref = createCourseDict()
+  student, course = getEval()
+  for i in range(len(student)):
+    s = student[i] 
+    s_index = int(s)-1
+    c = course[i] 
+    for k, v in ref.items():
+      if v[:6] == c:
+        temp = rawCost[k][s_index]
+        rawCost[k][s_index] = float(temp)/10
+
+  transposedCost = [[int(string) for string in inner] for inner in rawCost]
+  cost = [[row[i] for row in transposedCost] for i in range(len(transposedCost[0]))]
+
+
+  return cost
+
+if __name__ == "__main__":
+  start_time = time.perf_counter()
+  main()
+  print("Finished in ", time.perf_counter() - start_time, "seconds")
