@@ -11,6 +11,7 @@ THRESHOLD = 999999
 
 def main():
   
+  dumped_costs = 0
   cost = createDataArray()
   course_dict = createCourseDict()
   rows = len(cost)
@@ -28,7 +29,6 @@ def main():
 
   if solve_status == assignment.OPTIMAL:
     print('Total cost = ', assignment.OptimalCost())
-    print()
     for i in range(0, assignment.NumNodes()):
       if assignment.AssignmentCost(i) < THRESHOLD:
         result = 'Applicant #%d is assigned to Recitation %s.  Cost = %d' % (
@@ -37,9 +37,11 @@ def main():
               assignment.AssignmentCost(i))
       else:
         result = 'Applicant #%d cannot be assigned to any recitation.' %(i+1)
+        dumped_costs += 999999
       print(result) 
-      outputFile.write(result)
-      outputFile.write('\r\n')
+      outputFile.write(result + "\r\n")
+    print()
+    print('Total cost = ', (assignment.OptimalCost()-dumped_costs))
 
   elif solve_status == assignment.INFEASIBLE:
     print('No assignment is possible.')
@@ -96,4 +98,4 @@ def createDataArray():
 if __name__ == "__main__":
   start_time = time.perf_counter()
   main()
-  print("Finished in ", time.perf_counter() - start_time, "seconds")
+  print("Finished in", time.perf_counter() - start_time, "seconds")
