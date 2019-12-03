@@ -43,9 +43,11 @@ def cleanPreference(filename, rep):
                     selection.remove(choice)
             data[str(i+1)] = np.ceil(np.array(data[str(i+1)])*5/total_preferences)   
         # print(data[str(69)])  
+        course_name =  data['course']
         for key in data:
             data[key] = pd.Series(data[key]).repeat(rep) 
-    return pd.DataFrame(data)
+
+    return pd.DataFrame(data), course_name
 
 
 #read course schedule file
@@ -101,13 +103,13 @@ def cleanGrades(filename, rep):
 def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
 
     #get catalog: return course number and index alignment, repition of recitation
-    course_name, course_vol = getCatalog(courseScheduleFile)
+    recitation_name, course_vol = getCatalog(courseScheduleFile)
     repeat = [v for k, v in course_vol.items()]
     
     print("Processing schedules .. ")
     #clean course schedule, return NxT matrix
     #1 if class takes place, 0 otherwise
-    N = len(course_name)
+    N = len(recitation_name)
     courseSchedule = cleanSchedule(courseScheduleFile, N, 2)
     
     #clean student schedule, return MT matrix
@@ -122,11 +124,12 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     
     print("Processing undergrad preferences .. ")
     #clean preference matrix, return dataframe, then return N*M matrix
-    pref_df = cleanPreference(preferenceFile, repeat)
+    pref_df, class_name = cleanPreference(preferenceFile, repeat)
     # pref_df.to_csv(r'pref.csv', sep = ',', index = False)
     pref_matrix = np.array(pref_df.iloc[:, 1:])
     cost_matrix = 6*np.ones((N,M)) - pref_matrix #revert to cost matrix, the larger the less preferred
     cost_matrix[cost_matrix == 6] = 0
+    cost_mat = np.multiply(cost_matrix, 10)
 
     print("Retrieving eligibility and scores .. ")
     #compute availability matrix NxM, 1 if student can lead recitation, 0 otherwise
@@ -157,12 +160,11 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     eligibility = np.multiply(availability, grades_matrix)
     
     #compute cost
-    cost = np.multiply(eligibility, cost_matrix)
+    cost = np.multiply(eligibility, cost_mat)
     print("Finished!")
 
     #filter unqualified people, collapse vertically
     candidates = np.sum(cost, axis = 0)
-
     #filter unpopular class, collapse horizontally
     recitations = np.sum(cost, axis = 1)
     
@@ -173,7 +175,7 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
 
     #make dataframe
     out = dict()
-    out['Course'] = course_name
+    out['Course'] = recitation_name
     for i in range(M):
         out[str(i+1)] = [int(val) for val in cost[:, i]] 
     #add dummies
@@ -184,27 +186,56 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
    
     cost_df = pd.DataFrame(out)
     cost_df.to_csv(r'cost.csv', sep = ',', index = False)
+    
+    cost = cost[[0,1,2,3,7,8,13, 15, 16, 17, 18, 21, 22, 23,
+     26, 30, 32, 33, 34, 35, 39, 40, 42], :]
 
     cost[cost == 999999] = 0
     cost[cost > 0] = 1
-    for i in range(N):
-        print("Found %d candidates for recitation %s."% (sum(cost[i]), course_name[i]))
-
-    outputFile1 = open("unassigned_recitations.txt", "w+")
-    outputFile1.write("Hi Jason, we are unable to find qualified or available candidates for the following courses: \n")
-    for i in range(len(recitations)):
-        if recitations[i] == 0:
-            outputFile1.write("Course #" + course_name[i])
-            outputFile1.write('\n')
 
     interviewee = np.sum(cost, axis = 0) #it's different from candidates!!!
-    outputFile2 = open("candidates.txt", "w+")
-    outputFile2.write("Here are the people who are qualified to teach over 5 courses. \n")
-    for i in range(len(candidates)):
-        if interviewee[i] >5:
-            outputFile2.write("Candidate #" +str(i+1))
-            outputFile2.write('\n')
-        
+    classes = np.sum(cost, axis = 1) #it's different from recitation!
+
+    outputFile = open("fe_report.txt", "w+")
+    outputFile.write("Hi Jason, we are unable to find qualified or available candidates for the following courses: \n")
+    for i in range(len(classes)):
+        if classes[i] == 0:
+            outputFile.write("Course #" + class_name[i])
+            outputFile.write('\n')
+    outputFile.write('\n')
+
+    outputFile.write("Additionally, \n")
+    for i in range(len(classes)):
+        print("Found %d candidates for course %s."% (sum(cost[i]), class_name[i]))
+        if classes[i] != 0:
+            result = "Found %d candidates for course %s."% (sum(cost[i]), class_name[i])
+            outputFile.write(result)
+            outputFile.write('\n')
+    outputFile.write('\n')
+
+    eval_form = dict()
+    eval_form["student"] = list()
+    eval_form['you_preferred_assignment'] = list()
+
+    outputFile.write("Here are the people who are qualified to teach more than 2 courses. \n")
+    for i in range(len(interviewee)):
+        if interviewee[i] >2:
+            eval_form["student"].append(str(i+1))
+            eval_form["you_preferred_assignment"].append("21-XXX")
+            outputFile.write("Candidate #" +str(i+1)+': ')
+            for j in range(len(cost[:, i])):
+                if cost[j, i] >0:
+                    outputFile.write(class_name[j]+'; ')
+            outputFile.write('\n')
+    pd.DataFrame(eval_form).to_csv(r'evaluation.csv', sep = ',', index = False)
+
+    conclusion = "You may consider an interview for them. " +\
+            "If you do, please fill out the evaluation form" +\
+            "with the COURSE NUMBER of your preferred assignment" +\
+            "in the column next to student ID. \n Good Luck! \n"
+    outputFile.write(conclusion)
+    outputFile.close()
+
 if __name__ == '__main__':
     start_time = time.perf_counter()
   
