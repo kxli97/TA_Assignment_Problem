@@ -33,7 +33,7 @@ python assign_ta.py cost.csv
 
 4. If interview, run this command instead:
 ```bash
-python assign_ta_w_interview.py cost.csv eval.csv
+python assign_ta_w_interview.py cost.csv evaluation.csv
 ```
 
 5. Check out the output.txt file in your current directory
