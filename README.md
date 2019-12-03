@@ -24,10 +24,16 @@ python -m pip install --upgrade --user ortools
 ```bash
 python feature_engineering.py course_schedule.csv student_schedule.csv undergrad_preferences.csv grades.csv cost.csv
 ```
+3. Fill out the file `eval.csv` as instructed by the output file if you plan to interview candidates.
 
-3. Run this command to get TAs assigned (You can replace the cost.csv with your own cost matrix):
+3. If no interview. Run this command to get TAs assigned (You can replace the cost.csv with your own cost matrix):
 ```bash
 python assign_ta.py cost.csv
 ```
 
-4. Check out the output.txt file in your current directory
+4. If interview, run this command instead:
+```bash
+python assign_ta_w_interview.py cost.csv eval.csv
+```
+
+5. Check out the output.txt file in your current directory
