@@ -127,8 +127,6 @@ def main(courseScheduleFile, studentScheduleFile, preferenceFile, gradesFile):
     pref_df, class_name = cleanPreference(preferenceFile, repeat)
     # pref_df.to_csv(r'pref.csv', sep = ',', index = False)
     pref_matrix = np.array(pref_df.iloc[:, 1:])
-    cost_matrix = 6*np.ones((N,M)) - pref_matrix #revert to cost matrix, the larger the less preferred
-    cost_matrix[cost_matrix == 6] = 0
     cost_mat = np.multiply(cost_matrix, 10)
 
     print("Retrieving eligibility and scores .. ")
