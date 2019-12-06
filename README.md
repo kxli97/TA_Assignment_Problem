@@ -7,10 +7,10 @@
 - ~~Need to fix the dictionary in assign_ta.py~~
 
 > TODO's for Presentation:
-- Diagrams + Description (Xiaohua + Shane)
-- Pipeline (Selena)
-- Matrices Visualization (Kimberly)
-- Polish the deck style (Together)
+- ~~Diagrams + Description (Xiaohua + Shane)~~
+- ~~Pipeline (Selena)~~
+- ~~Matrices Visualization (Kimberly)~~
+- ~~Polish the deck style (Together)~~
 
 > TODO's for Report:
 
